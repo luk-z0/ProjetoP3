@@ -84,7 +84,7 @@ public class Locadora extends CadastroCliente {
                                     System.out.println("Se NÃO deseja depositar o dinheiro ");
                                     System.out.println("Digite 2");
                                     k = z.nextInt();
-                                
+
                                 } else {
                                     System.out.println("O valor da sua carteira digital é : " + clientes.get(y).getCarteira());
                                     break;
@@ -206,6 +206,45 @@ public class Locadora extends CadastroCliente {
         }
     }
 
+    public void disconto(Modelo[] m, Preco[] p, Promocao.Cupom cm, String nome, String cpf, ArrayList<Cliente> clientes, Locadora locadora) {
+        Scanner z = new Scanner(System.in);
+        double precSDisc, precDis;
+        String carro;
+        List<Modelo> modeloEnum = Arrays.asList(m);
+        List<Preco> precoEnum = Arrays.asList(p);
+
+        if (consultarCliente(clientes, nome, cpf) == true) {
+            System.out.println("Digite o cupom: ");
+            String cupom = z.next();
+            for (int i = 0; i < clientes.size(); i++) {
+                if (cm.getCupom().contains(cupom) == true) {
+                    locadora.exibModPre(m, p);
+                    System.out.println("Digite o modelo do carro: ");
+                    carro = z.next();
+                    do {
+
+                        if (consultarCarro(modeloEnum, carro) == true) {
+                            System.out.println(" O Preço do carro sem desconto: " + precoEnum.get(i).getPreco());
+                            precSDisc = p[i].getPreco();
+                            precDis = precSDisc - (precSDisc * 0.10);
+                            System.out.println("O Preço do carro com disconto: " + precDis);
+                            i++;
+                            break;
+                        } else {
+                            System.out.println("Carro inválido");
+                            break;
+                        }
+                    } while (i < m.length);
+                } else {
+                    System.out.println("Cupom inválido! ");
+                    break;
+                }
+            }
+        } else {
+            System.out.println("Cliente não encontrado.");
+        }
+    }
+
     public void depositar(ArrayList<Cliente> clientes, double valorDeposito, String nome, String cpf) {
         for (int i = 0; i < clientes.size();) {
             if (consultarCliente(clientes, nome, cpf) == true) {
@@ -263,5 +302,7 @@ public class Locadora extends CadastroCliente {
         }
 
     }
+
+    
 
 }

@@ -1,15 +1,10 @@
 package catchau;
 
-import catchau.Carro.Modelo;
-import catchau.Carro.Preco;
-import catchau.Promocao.Cupom;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.InputMismatchException;
-import java.util.List;
 import java.util.Scanner;
 
-class CadastroCliente {
+public class CadastroCliente {
 
     public int cont;
 
@@ -17,19 +12,22 @@ class CadastroCliente {
 
     }
 
-    public void cadastroCliente(Cliente c, ArrayList<Cliente> clientes, String nome, String cpf) {
+    public void cadastroCliente(ArrayList<Cliente> clientes) {
         Scanner z = new Scanner(System.in);
         int idade;
-        String cnh, validade;
+        Cliente c;
+        String cnh, validade,nome,cpf;
+        System.out.println("Digite o nome do cliente: ");
+        nome=z.nextLine();
+        System.out.println("Digite o cpf do cliente: ");
+        cpf=z.next();
         do {
             System.out.println("Digite sua idade: ");
             idade = z.nextInt();
             if (idade >= 21) {
-                c.setIdade(idade);
                 z.nextLine();
                 do {
                     if (isCPF(cpf) == true) {
-                        c.setCpf(cpf);
                         break;
 
                     } else {
@@ -41,7 +39,6 @@ class CadastroCliente {
                     System.out.println("Digite o numero da CNH");
                     cnh = z.next();
                     if (validaCNH(cnh) == true) {
-                        c.setCnh(cnh);
                         break;
                     } else {
                         System.out.println("CNH inválida");
@@ -49,7 +46,7 @@ class CadastroCliente {
                 } while (validaCNH(cnh) == true);
                 System.out.println("Digite a validade da sua CNH: ");
                 validade = z.next();
-                c.setValidade(validade);
+                c = new Cliente.ClienteBuilder().setNome(nome).setIdade(idade).setCpf(cpf).setCnh(cnh).setValidade(validade).criarCliente();
                 clientes.add(c);
                 cont++;
                 System.out.println("Cadastro realizado com sucesso!");
@@ -99,42 +96,11 @@ class CadastroCliente {
         return false;
     }//consultas
 
-    public void disconto(Modelo[] m, Preco[] p, Cupom cm, String nome, String cpf, ArrayList<Cliente> clientes, Locadora locadora) {
-        Scanner z = new Scanner(System.in);
-        double precSDisc, precDis;
-        String carro;
-        List<Modelo> modeloEnum = Arrays.asList(m);
-        List<Preco> precoEnum = Arrays.asList(p);
-
-        if (consultarCliente(clientes, nome, cpf) == true) {
-            System.out.println("Digite o cupom: ");
-            String cupom = z.next();
-            for (int i = 0; i < clientes.size(); i++) {
-                if (cm.getCupom().contains(cupom) == true) {
-                    locadora.exibModPre(m, p);
-                    System.out.println("Digite o modelo do carro: ");
-                    carro = z.next();
-                    do {
-
-                        if (consultarCarro(modeloEnum, carro, i)) {
-                            System.out.println(" O Preço do carro sem desconto: " + precoEnum.get(i).getPreco());
-                            precSDisc = p[i].getPreco();
-                            precDis = precSDisc - (precSDisc * 0.10);
-                            System.out.println("O Preço do carro com disconto: " + precDis);
-                            i++;
-                            break;
-                        } else {
-                            System.out.println("Carro inválido");
-                            break;
-                        }
-                    } while (i < m.length);
-                } else {
-                    System.out.println("Cupom inválido! ");
-                    break;
-                }
+    public void exibir(String cpf, ArrayList<Cliente> clientes) {
+        for (int i = 0; i < clientes.size(); i++) {
+            if (clientes.get(i).getCpf().contains(cpf) == true) {
+                System.out.println(clientes.get(i).exibir());
             }
-        } else {
-            System.out.println("Cliente não encontrado.");
         }
     }
 
@@ -223,10 +189,6 @@ class CadastroCliente {
         long x = v % 11;
         long vl2 = (x >= 10) ? 0 : x - dsc;
         return (String.valueOf(vl1) + String.valueOf(vl2)).equals(cnh.substring(cnh.length() - 2));
-    }
-
-    private boolean consultarCarro(List<Modelo> modeloEnum, String carro, int i) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

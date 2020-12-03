@@ -7,8 +7,70 @@ public class Cliente implements Comparable<Cliente> {
     public float deposito;
     private double carteira;
 
-    public Cliente(String nome) {
+    private Cliente(String nome, int idade, String cpf, String cnh, String validade) {
         this.nome = nome;
+        this.cpf = cpf;
+        this.idade = idade;
+        this.cnh = cnh;
+        this.validade = validade;
+    }
+
+    public static class ClienteBuilder {
+
+        public String cpf, nome, cnh, validade, carroAlugado;
+        public int idade, renovacao;
+        public float deposito;
+        private double carteira;
+
+        public ClienteBuilder setCpf(String cpf) {
+            this.cpf = cpf;
+            return this;
+        }
+
+        public ClienteBuilder setNome(String nome) {
+            this.nome = nome;
+            return this;
+        }
+
+        public ClienteBuilder setCnh(String cnh) {
+            this.cnh = cnh;
+            return this;
+        }
+
+        public ClienteBuilder setValidade(String validade) {
+            this.validade = validade;
+            return this;
+        }
+
+        public ClienteBuilder setCarroAlugado(String carroAlugado) {
+            this.carroAlugado = carroAlugado;
+            return this;
+        }
+
+        public ClienteBuilder setIdade(int idade) {
+            this.idade = idade;
+            return this;
+        }
+
+        public ClienteBuilder setRenovacao(int renovacao) {
+            this.renovacao = renovacao;
+            return this;
+        }
+
+        public ClienteBuilder setDeposito(float deposito) {
+            this.deposito = deposito;
+            return this;
+        }
+
+        public ClienteBuilder setCarteira(double carteira) {
+            this.carteira = carteira;
+            return this;
+        }
+
+        public Cliente criarCliente() {
+            return new Cliente(nome, idade, cpf, cnh, validade);
+        }
+        //ele retorna pra ele mesmo,dessa forma podemos fazer uma chamada concatenada de metodos
     }
 
     public void setCpf(String cpf) {
@@ -80,11 +142,15 @@ public class Cliente implements Comparable<Cliente> {
     }
 
     public String getCarroAlugado() {
-        return this.carroAlugado;
+        if (this.carroAlugado == null) {
+            return "Nenhum carro alugado";
+        } else {
+            return this.carroAlugado;
+        }
     }
 
     public String exibir() {
-        return "Nome: " + this.nome + "Idade: " + this.idade + "CPF: " + this.cpf + "CNH: " + this.cnh + "Validade CNH: " + this.validade + "Carro alugado: " + this.carroAlugado + "Carteira Digital: R$ " + this.carteira + "Número de renovações:  " + this.renovacao + "Valor total gasto: " + this.deposito;
+        return "Nome: " + this.nome + "\nIdade: " + this.idade + "\nCPF: " + this.cpf + "\nCNH: " + this.cnh + "\nValidade CNH: " + this.validade + "\nCarro alugado: " + this.carroAlugado + "\nCarteira Digital: R$ " + this.carteira + "\nNúmero de renovações:  " + this.renovacao + "\nValor total gasto: " + this.deposito;
     }
 
     @Override

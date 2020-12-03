@@ -17,7 +17,7 @@ class Catchau {
         Modelo[] m = Modelo.values();
         Preco[] p = Preco.values();
         Cupom cm = Cupom.CUPOM1;
-        Cliente c;
+
         int menu, login;
         do {
             locadora.login();
@@ -64,11 +64,13 @@ class Catchau {
                                     locadora.depositar(clientes, valorDeposito, nome, cpf);
                                     break;
                                 case 8:
-                                //exibir info do cliente
+                                    //exibir info do cliente
+                                    C.exibir(cpf, clientes);
                                     break;
 
                                 case 0:
-                                    System.out.println("Programa encerrado");
+                                    System.out.println("Logout realizado com sucesso");
+
                                     break;
                                 default:
                                     System.out.println("OPERAÇÃO INVALIDA!");
@@ -80,13 +82,7 @@ class Catchau {
                     }
                     break;
                 case 2:
-                    System.out.println("Digite o nome do cliente: ");
-                    nome = in.nextLine();
-                    System.out.println("Digite o cpf do cliente: ");
-                    cpf = in.nextLine();
-                    c = new Cliente(nome);
-                    c.setNome(nome);
-                    C.cadastroCliente(c, clientes, nome, cpf);
+                    C.cadastroCliente(clientes);
                     break;
                 case 0:
                     System.out.println("Programa encerrado");
@@ -97,4 +93,5 @@ class Catchau {
             }
         } while (login != 0);
     }
+
 }
